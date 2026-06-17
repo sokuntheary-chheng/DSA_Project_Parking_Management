@@ -80,8 +80,8 @@ void displayAll(List* ls) {
     Element* current = ls->head;
     while (current != nullptr) {
         cout << "Plate: " << current->data.plate
-             << " | Slot: " << current->data.slotID
-             << " | Time: " << current->data.entryTime << endl;
+            << " | Slot: " << current->data.slotID
+            << " | Time: " << current->data.entryTime << endl;
         current = current->next;
     }
 }
