@@ -2,6 +2,8 @@
 #define STACK_H
 #include <string>
 #include "vehicle.h"
+#include "vehicle.h"
+#include <string>
 using namespace std;
 
 struct ActionRecord {

@@ -1,13 +1,13 @@
+// vehicle.h
 #ifndef VEHICLE_H
 #define VEHICLE_H
-
 #include <string>
+using namespace std;
 
 struct Vehicle {
-    std::string plate;
-    std::string type;
-    int slotID;
-    std::string entryTime;
+    string plate;      // e.g. "ABC-1234"
+    int slotID;        // e.g. 5
+    string entryTime;  // e.g. "08:30"
 };
 
 #endif

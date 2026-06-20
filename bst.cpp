@@ -10,29 +10,34 @@ BSTNode* insertBST(BSTNode* root, Vehicle v) {
         node->right = nullptr;
         return node;
     }
-    if (v.slotID < root->data.slotID) {
+    if (v.slotID < root->data.slotID)
         root->left = insertBST(root->left, v);
-    } else if (v.slotID > root->data.slotID) {
+    else if (v.slotID > root->data.slotID)
         root->right = insertBST(root->right, v);
-    }
     return root;
+}
+
+void inOrder(BSTNode* root) {
+    if (root != nullptr) {
+        inOrder(root->left);
+        cout << "Slot " << root->data.slotID
+             << " | Plate: " << root->data.plate
+             << " | Time: " << root->data.entryTime << endl;
+        inOrder(root->right);
+    }
 }
 
 BSTNode* searchBST(BSTNode* root, int slotID) {
     if (root == nullptr) return nullptr;
     if (slotID == root->data.slotID) return root;
-    if (slotID < root->data.slotID) {
-        return searchBST(root->left, slotID);
-    }
+    if (slotID < root->data.slotID) return searchBST(root->left, slotID);
     return searchBST(root->right, slotID);
 }
 
 // Helper: find minimum node in a subtree (for delete case 3)
 BSTNode* findMin(BSTNode* root) {
-    if (root == nullptr) return nullptr;
-    while (root->left != nullptr) {
+    while (root->left != nullptr)
         root = root->left;
-    }
     return root;
 }
 
@@ -53,14 +58,14 @@ BSTNode* deleteBST(BSTNode* root, int slotID) {
         }
         // Case 2: one child
         if (root->left == nullptr) {
-            BSTNode* temp = root->right;
+            BSTNode* tmp = root->right;
             delete root;
-            return temp;
+            return tmp;
         }
         if (root->right == nullptr) {
-            BSTNode* temp = root->left;
+            BSTNode* tmp = root->left;
             delete root;
-            return temp;
+            return tmp;
         }
         // Case 3: two children — find min in right subtree
         BSTNode* minNode = findMin(root->right);
@@ -68,36 +73,4 @@ BSTNode* deleteBST(BSTNode* root, int slotID) {
         root->right = deleteBST(root->right, minNode->data.slotID);
     }
     return root;
-}
-
-void inOrder(BSTNode* root) {
-    if (root != nullptr) {
-        inOrder(root->left);
-        cout << "Slot " << root->data.slotID << " | Plate: " << root->data.plate
-             << " | Type: " << root->data.type << " | Time: " << root->data.entryTime << endl;
-        inOrder(root->right);
-    }
-}
-
-void preOrder(BSTNode* root) {
-    if (root != nullptr) {
-        cout << "Slot " << root->data.slotID << " | Plate: " << root->data.plate
-             << " | Type: " << root->data.type << " | Time: " << root->data.entryTime << endl;
-        preOrder(root->left);
-        preOrder(root->right);
-    }
-}
-
-void postOrder(BSTNode* root) {
-    if (root != nullptr) {
-        postOrder(root->left);
-        postOrder(root->right);
-        cout << "Slot " << root->data.slotID << " | Plate: " << root->data.plate
-             << " | Type: " << root->data.type << " | Time: " << root->data.entryTime << endl;
-    }
-}
-
-int countBST(BSTNode* root) {
-    if (root == nullptr) return 0;
-    return 1 + countBST(root->left) + countBST(root->right);
 }

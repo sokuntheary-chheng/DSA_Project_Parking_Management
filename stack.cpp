@@ -18,9 +18,9 @@ void push(Stack* st, ActionRecord a) {
 }
 
 ActionRecord pop(Stack* st) {
-    if (st->n == 0 || st->top == nullptr) {
+    if (st->n == 0) {
         cout << "Stack is empty. Nothing to undo." << endl;
-        ActionRecord empty; 
+        ActionRecord empty;
         empty.actionType = "";
         return empty;
     }
@@ -33,8 +33,8 @@ ActionRecord pop(Stack* st) {
 }
 
 ActionRecord peek(Stack* st) {
-    if (st->n == 0 || st->top == nullptr) {
-        ActionRecord empty; 
+    if (st->n == 0) {
+        ActionRecord empty;
         empty.actionType = "";
         return empty;
     }
@@ -46,17 +46,17 @@ bool isEmptyStack(Stack* st) {
 }
 
 void displayStack(Stack* st) {
-    if (st->n == 0 || st->top == nullptr) {
+    if (st->n == 0) {
         cout << "No actions in history." << endl;
         return;
     }
-    cout << "\n--- Action History (Top to Bottom) ---" << endl;
+    cout << "--- Action History (most recent first) ---" << endl;
     StackElement* current = st->top;
+    int i = 1;
     while (current != nullptr) {
-        cout << "Action: " << current->data.actionType 
-             << " | Plate: " << current->data.v.plate 
-             << " | Slot: " << current->data.v.slotID << endl;
+        cout << i++ << ". " << current->data.actionType
+            << " | Plate: " << current->data.v.plate
+            << " | Slot: " << current->data.v.slotID << endl;
         current = current->next;
     }
-    cout << "---------------------------------------" << endl;
 }

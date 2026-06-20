@@ -1,7 +1,7 @@
+#include <iostream>
 #include "sorting.h"
-#include "linkedlist.h"
+using namespace std;
 
-// ─── Sort by License Plate (alphabetical ascending) ───────────────────────────
 void sortByPlate(List* ls) {
     if (ls->n < 2) return;
     bool swapped;
@@ -11,8 +11,8 @@ void sortByPlate(List* ls) {
         Element* current = ls->head;
         while (current->next != end) {
             if (current->data.plate > current->next->data.plate) {
-                Vehicle temp   = current->data;
-                current->data  = current->next->data;
+                Vehicle temp = current->data;
+                current->data = current->next->data;
                 current->next->data = temp;
                 swapped = true;
             }
@@ -20,9 +20,9 @@ void sortByPlate(List* ls) {
         }
         end = current;
     } while (swapped);
+    cout << "Sorted by plate." << endl;
 }
 
-// ─── Sort by Slot ID (numeric ascending) ──────────────────────────────────────
 void sortBySlot(List* ls) {
     if (ls->n < 2) return;
     bool swapped;
@@ -32,8 +32,8 @@ void sortBySlot(List* ls) {
         Element* current = ls->head;
         while (current->next != end) {
             if (current->data.slotID > current->next->data.slotID) {
-                Vehicle temp   = current->data;
-                current->data  = current->next->data;
+                Vehicle temp = current->data;
+                current->data = current->next->data;
                 current->next->data = temp;
                 swapped = true;
             }
@@ -41,9 +41,9 @@ void sortBySlot(List* ls) {
         }
         end = current;
     } while (swapped);
+    cout << "Sorted by slot ID." << endl;
 }
 
-// ─── Sort by Entry Time (chronological ascending) ─────────────────────────────
 void sortByTime(List* ls) {
     if (ls->n < 2) return;
     bool swapped;
@@ -53,8 +53,8 @@ void sortByTime(List* ls) {
         Element* current = ls->head;
         while (current->next != end) {
             if (current->data.entryTime > current->next->data.entryTime) {
-                Vehicle temp   = current->data;
-                current->data  = current->next->data;
+                Vehicle temp = current->data;
+                current->data = current->next->data;
                 current->next->data = temp;
                 swapped = true;
             }
@@ -62,4 +62,5 @@ void sortByTime(List* ls) {
         }
         end = current;
     } while (swapped);
+    cout << "Sorted by entry time." << endl;
 }

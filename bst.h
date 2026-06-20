@@ -1,7 +1,5 @@
 #ifndef BST_H
 #define BST_H
-
-#include <string>
 #include "vehicle.h"
 
 struct BSTNode {
@@ -12,11 +10,7 @@ struct BSTNode {
 
 BSTNode* insertBST(BSTNode* root, Vehicle v);
 BSTNode* searchBST(BSTNode* root, int slotID);
-BSTNode* findMin(BSTNode* root);
 BSTNode* deleteBST(BSTNode* root, int slotID);
 void inOrder(BSTNode* root);
-void preOrder(BSTNode* root);
-void postOrder(BSTNode* root);
-int countBST(BSTNode* root);
 
 #endif

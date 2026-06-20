@@ -1,6 +1,5 @@
 #include <iostream>
 #include "queue.h"
-
 using namespace std;
 
 Queue* createEmptyQueue() {
@@ -23,21 +22,20 @@ void enqueue(Queue* q, Vehicle v) {
         q->rear = e;
     }
     q->n++;
+    cout << "Vehicle " << v.plate << " added to waiting queue." << endl;
 }
 
 Vehicle dequeue(Queue* q) {
-    if (q->n == 0 || q->front == nullptr) {
+    if (q->n == 0) {
         cout << "Queue is empty." << endl;
-        Vehicle empty; 
-        empty.plate = ""; 
+        Vehicle empty;
+        empty.plate = "";
         return empty;
     }
     QElement* tmp = q->front;
     Vehicle v = tmp->data;
     q->front = tmp->next;
-    if (q->front == nullptr) {
-        q->rear = nullptr;
-    }
+    if (q->front == nullptr) q->rear = nullptr;
     delete tmp;
     q->n--;
     return v;
@@ -48,18 +46,16 @@ bool isEmptyQueue(Queue* q) {
 }
 
 void displayQueue(Queue* q) {
-    if (q->n == 0 || q->front == nullptr) {
-        cout << "No vehicles currently waiting in the queue." << endl;
+    if (q->n == 0) {
+        cout << "Waiting queue is empty." << endl;
         return;
     }
-    cout << "\n--- Waiting Queue (Front to Rear) ---" << endl;
+    cout << "--- Waiting Queue (" << q->n << " vehicle(s)) ---" << endl;
     QElement* current = q->front;
     int pos = 1;
     while (current != nullptr) {
-        cout << pos << ". Plate: " << current->data.plate 
-             << " | Entry Time: " << current->data.entryTime << endl;
+        cout << pos++ << ". Plate: " << current->data.plate
+            << " | Entry Time: " << current->data.entryTime << endl;
         current = current->next;
-        pos++;
     }
-    cout << "-------------------------------------" << endl;
 }

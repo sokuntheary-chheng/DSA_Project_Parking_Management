@@ -88,8 +88,8 @@ void displayAll(List* ls) {
     cout << "\n--- Parked Vehicles (" << ls->n << ") ---" << endl;
     while (current != nullptr) {
         cout << "Plate: " << current->data.plate
-             << " | Slot: " << current->data.slotID
-             << " | Time: " << current->data.entryTime << endl;
+            << " | Slot: " << current->data.slotID
+            << " | Time: " << current->data.entryTime << endl;
         current = current->next;
     }
 }

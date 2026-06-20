@@ -1,12 +1,10 @@
-#include "hashtable.h"
 #include <iostream>
-#include <string>
-
+#include "hashtable.h"
 using namespace std;
 
 int hashFunction(string plate) {
     int sum = 0;
-    for (int i = 0; i < plate.length(); i++) {
+    for (int i = 0; i < (int)plate.length(); i++) {
         sum += plate[i];
     }
     return sum % TABLE_SIZE;
@@ -17,7 +15,6 @@ HashTable* createHashTable() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         ht->buckets[i] = nullptr;
     }
-    ht->n = 0;
     return ht;
 }
 
@@ -27,7 +24,7 @@ void insertHT(HashTable* ht, Vehicle v) {
     newNode->data = v;
     newNode->next = ht->buckets[index];
     ht->buckets[index] = newNode;
-    ht->n++;
+    cout << "Vehicle " << v.plate << " inserted at hash index " << index << endl;
 }
 
 bool searchHT(HashTable* ht, string plate, Vehicle& result) {
@@ -40,6 +37,7 @@ bool searchHT(HashTable* ht, string plate, Vehicle& result) {
         }
         current = current->next;
     }
+    cout << "Vehicle " << plate << " not found." << endl;
     return false;
 }
 
@@ -49,40 +47,27 @@ void deleteHT(HashTable* ht, string plate) {
     HNode* prev = nullptr;
     while (current != nullptr) {
         if (current->data.plate == plate) {
-            if (prev == nullptr) {
+            if (prev == nullptr)
                 ht->buckets[index] = current->next;
-            } else {
+            else
                 prev->next = current->next;
-            }
             delete current;
-            ht->n--;
+            cout << "Vehicle " << plate << " removed from hash table." << endl;
             return;
         }
         prev = current;
         current = current->next;
     }
-}
-
-void updateHT(HashTable* ht, string plate, string newTime) {
-    int index = hashFunction(plate);
-    HNode* current = ht->buckets[index];
-    while (current != nullptr) {
-        if (current->data.plate == plate) {
-            current->data.entryTime = newTime;
-            return;
-        }
-        current = current->next;
-    }
+    cout << "Vehicle " << plate << " not found in hash table." << endl;
 }
 
 void displayHT(HashTable* ht) {
-    if (ht->n == 0) {
-        cout << "Hash table is empty" << endl;
-        return;
-    }
+    cout << "--- Hash Table Contents ---" << endl;
+    bool empty = true;
     for (int i = 0; i < TABLE_SIZE; i++) {
         if (ht->buckets[i] != nullptr) {
-            cout << "Bucket " << i << ": ";
+            empty = false;
+            cout << "[" << i << "]: ";
             HNode* current = ht->buckets[i];
             while (current != nullptr) {
                 cout << current->data.plate << " (Slot " << current->data.slotID << ")";
@@ -92,8 +77,5 @@ void displayHT(HashTable* ht) {
             cout << endl;
         }
     }
-}
-
-int getHTSize(HashTable* ht) {
-    return ht->n;
+    if (empty) cout << "Hash table is empty." << endl;
 }

@@ -8,7 +8,6 @@
 #include "hashtable.h"
 #include "bst.h"
 #include "fileio.h"
-#include <cctype>
 using namespace std;
 
 #define TOTAL_SLOTS 200
@@ -47,9 +46,9 @@ int main() {
 
     int choice;
     do {
-        cout << "\n========== UNIVERSITY PARKING SYSTEM ==========" << endl;
-        cout << " Slots 1-150: Cars | Slots 151-200: Motorcycles" << endl;
-        cout << "================================================" << endl;
+        cout << "\n====== UNIVERSITY PARKING SYSTEM ======" << endl;
+        cout << " Slots 1-150: Motorcycles | Slots 151-200: Cars" << endl;
+        cout << "========================================" << endl;
         cout << "1.  Park a vehicle" << endl;
         cout << "2.  Remove a vehicle" << endl;
         cout << "3.  View waiting queue" << endl;
@@ -64,66 +63,52 @@ int main() {
         cin >> choice;
         cout << endl;
 
-        // ── 1. Park a vehicle ──────────────────────────────────
+        // 1. Park a vehicle
         if (choice == 1) {
             string plate, time, type;
             cout << "Vehicle type (car / motorcycle): ";
             cin >> type;
+            cout << "Plate number: ";
+            cin >> plate;
+            cout << "Entry time (HH:MM): ";
+            cin >> time;
 
-            if (type != "car" && type != "motorcycle") {
-                cout << "Invalid vehicle type. Please enter 'car' or 'motorcycle'." << endl;
+            int slotFrom, slotTo;
+            if (type == "car") {
+                slotFrom = 151; slotTo = 200;
             } else {
-                cout << "Plate number: ";
-                cin >> plate;
+                slotFrom = 1; slotTo = 150;
+            }
 
-                // Check duplicate
-                Vehicle existing;
-                if (searchHT(ht, plate, existing)) {
-                    cout << "Vehicle " << plate << " is already parked at slot " << existing.slotID << endl;
-                } else {
-                    cout << "Entry time (HH:MM): ";
-                    cin >> time;
+            int slot = findFreeSlot(slotFrom, slotTo);
+            if (slot == -1) {
+                cout << "No free slot for " << type << ". Adding to waiting queue." << endl;
+                Vehicle v;
+                v.plate = plate;
+                v.slotID = -1;
+                v.entryTime = time;
+                enqueue(waitingQueue, v);
+            } else {
+                Vehicle v;
+                v.plate = plate;
+                v.slotID = slot;
+                v.entryTime = time;
 
-                    int slotFrom, slotTo;
-                    if (type == "car") {
-                        slotFrom = 1; slotTo = 150;
-                    } else {
-                        slotFrom = 151; slotTo = 200;
-                    }
+                addEnd(parkingList, v);
+                insertHT(ht, v);
+                bstRoot = insertBST(bstRoot, v);
+                slotOccupied[slot] = true;
 
-                    int slot = findFreeSlot(slotFrom, slotTo);
-                    if (slot == -1) {
-                        cout << "No free slot for " << type << ". Adding to waiting queue." << endl;
-                        Vehicle v;
-                        v.plate = plate;
-                        v.type = type;
-                        v.slotID = -1;
-                        v.entryTime = time;
-                        enqueue(waitingQueue, v);
-                    } else {
-                        Vehicle v;
-                        v.plate = plate;
-                        v.type = type;
-                        v.slotID = slot;
-                        v.entryTime = time;
+                ActionRecord record;
+                record.actionType = "PARK";
+                record.v = v;
+                push(actionStack, record);
 
-                        addEnd(parkingList, v);
-                        insertHT(ht, v);
-                        bstRoot = insertBST(bstRoot, v);
-                        slotOccupied[slot] = true;
-
-                        ActionRecord record;
-                        record.actionType = "PARK";
-                        record.v = v;
-                        push(actionStack, record);
-
-                        cout << "Vehicle " << plate << " parked at slot " << slot << endl;
-                    }
-                }
+                cout << "Vehicle " << plate << " parked at slot " << slot << endl;
             }
         }
 
-        // ── 2. Remove a vehicle ────────────────────────────────
+        // 2. Remove a vehicle
         else if (choice == 2) {
             string plate;
             cout << "Enter plate to remove: ";
@@ -159,58 +144,55 @@ int main() {
                         cout << "Vehicle " << next.plate << " moved from queue to slot " << newSlot << endl;
                     }
                 }
-            } else {
-                cout << "Vehicle " << plate << " not found." << endl;
             }
         }
 
-        // ── 3. View waiting queue ──────────────────────────────
+        // 3. View waiting queue
         else if (choice == 3) {
             displayQueue(waitingQueue);
         }
 
-        // ── 4. Add to waiting queue manually ──────────────────
+        // 4. Add to waiting queue manually
         else if (choice == 4) {
-            string plate, time, type;
-            cout << "Vehicle type (car / motorcycle): ";
-            cin >> type;
+            string plate, time;
             cout << "Plate number: ";
             cin >> plate;
             cout << "Entry time (HH:MM): ";
             cin >> time;
             Vehicle v;
             v.plate = plate;
-            v.type = type;
             v.slotID = -1;
             v.entryTime = time;
             enqueue(waitingQueue, v);
         }
 
-        // ── 5. Undo last action ────────────────────────────────
+        // 5. Undo last action
         else if (choice == 5) {
             if (isEmptyStack(actionStack)) {
                 cout << "Nothing to undo." << endl;
             } else {
                 ActionRecord last = pop(actionStack);
                 if (last.actionType == "PARK") {
+                    // Reverse a PARK = remove the vehicle
                     deleteByPlate(parkingList, last.v.plate);
                     deleteHT(ht, last.v.plate);
                     bstRoot = deleteBST(bstRoot, last.v.slotID);
                     slotOccupied[last.v.slotID] = false;
                     cout << "Undo PARK: Vehicle " << last.v.plate
-                         << " removed from slot " << last.v.slotID << endl;
+                        << " removed from slot " << last.v.slotID << endl;
                 } else if (last.actionType == "REMOVE") {
+                    // Reverse a REMOVE = park the vehicle back
                     addEnd(parkingList, last.v);
                     insertHT(ht, last.v);
                     bstRoot = insertBST(bstRoot, last.v);
                     slotOccupied[last.v.slotID] = true;
                     cout << "Undo REMOVE: Vehicle " << last.v.plate
-                         << " restored to slot " << last.v.slotID << endl;
+                        << " restored to slot " << last.v.slotID << endl;
                 }
             }
         }
 
-        // ── 6. Search by plate ─────────────────────────────────
+        // 6. Search by plate
         else if (choice == 6) {
             string plate;
             cout << "Enter plate to search: ";
@@ -218,18 +200,17 @@ int main() {
             Vehicle result;
             if (searchHT(ht, plate, result)) {
                 cout << "Found -> Plate: " << result.plate
-                     << " | Type: " << result.type
-                     << " | Slot: " << result.slotID
-                     << " | Entry Time: " << result.entryTime << endl;
+                    << " | Slot: " << result.slotID
+                    << " | Entry Time: " << result.entryTime << endl;
             }
         }
 
-        // ── 7. Display all parked vehicles ─────────────────────
+        // 7. Display all parked vehicles
         else if (choice == 7) {
             displayAll(parkingList);
         }
 
-        // ── 8. Sort vehicles ───────────────────────────────────
+        // 8. Sort vehicles
         else if (choice == 8) {
             cout << "Sort by:" << endl;
             cout << "1. Plate number" << endl;
@@ -253,13 +234,13 @@ int main() {
             displayAll(parkingList);
         }
 
-        // ── 9. Browse slots by ID (BST in-order) ───────────────
+        // Browse slots by ID (BST in-order)
         else if (choice == 9) {
             cout << "All occupied slots in ascending order:" << endl;
             inOrder(bstRoot);
         }
 
-        // ── 10. Save and Exit ──────────────────────────────────
+        // 10. Save and Exit 
         else if (choice == 10) {
             saveToCSV(parkingList);
             cout << "Goodbye!" << endl;

@@ -1,6 +1,5 @@
 #ifndef FILEIO_H
 #define FILEIO_H
-#include <string>
 #include "linkedlist.h"
 #include "hashtable.h"
 #include "bst.h"

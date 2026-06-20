@@ -1,10 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
-#include <iostream>
-#include <string>
 #include "vehicle.h"
-
-using namespace std;
 
 struct QElement {
     Vehicle data;
