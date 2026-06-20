@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include "vehicle.h"
+#include <string>
+using namespace std;
 
 struct Element {
     Vehicle data;
