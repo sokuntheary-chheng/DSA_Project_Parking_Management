@@ -1,6 +1,5 @@
-// linkedlist.cpp
-#include "linkedlist.h"
 #include <iostream>
+#include "linkedlist.h"
 using namespace std;
 
 List* createEmptyList() {
@@ -11,7 +10,6 @@ List* createEmptyList() {
     return ls;
 }
 
-// function to add a vehicle to the end of the list
 void addEnd(List* ls, Vehicle v) {
     Element* e = new Element;
     e->data = v;
@@ -25,27 +23,35 @@ void addEnd(List* ls, Vehicle v) {
     ls->n++;
 }
 
-// function to delete a vehicle by its plate number
 void deleteByPlate(List* ls, string plate) {
+    if (ls->n == 0) {
+        cout << "List is empty." << endl;
+        return;
+    }
     Element* current = ls->head;
-    Element* previous = nullptr;
+    Element* prev = nullptr;
+
     while (current != nullptr) {
         if (current->data.plate == plate) {
-            if (previous == nullptr) { // Deleting head
+            if (prev == nullptr) {
+                // delete at head
                 ls->head = current->next;
             } else {
-                previous->next = current->next;
+                prev->next = current->next;
             }
-            if (current == ls->tail) { // Deleting tail
-                ls->tail = previous;
+            if (current->next == nullptr) {
+                // deleted tail
+                ls->tail = prev;
             }
             delete current;
             ls->n--;
+            cout << "Vehicle " << plate << " removed from list." << endl;
             return;
         }
-        previous = current;
+        prev = current;
         current = current->next;
     }
+    cout << "Vehicle " << plate << " not found in list." << endl;
 }
 
 bool searchByPlate(List* ls, string plate, Vehicle& result) {
@@ -65,19 +71,21 @@ void updateByPlate(List* ls, string plate, string newTime) {
     while (current != nullptr) {
         if (current->data.plate == plate) {
             current->data.entryTime = newTime;
+            cout << "Entry time updated for " << plate << endl;
             return;
         }
         current = current->next;
     }
+    cout << "Vehicle " << plate << " not found." << endl;
 }
 
-// function to display all vehicles in the list
 void displayAll(List* ls) {
     if (ls->n == 0) {
         cout << "No vehicles parked." << endl;
         return;
     }
     Element* current = ls->head;
+    cout << "\n--- Parked Vehicles (" << ls->n << ") ---" << endl;
     while (current != nullptr) {
         cout << "Plate: " << current->data.plate
              << " | Slot: " << current->data.slotID
