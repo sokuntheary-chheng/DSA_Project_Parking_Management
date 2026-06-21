@@ -5,9 +5,10 @@
 using namespace std;
 
 struct Vehicle {
-    string plate;      // e.g. "ABC-1234"
-    int slotID;        // e.g. 5
-    string entryTime;  // e.g. "08:30"
+    string plate;       // "ABC-1234"
+    string type;        // "Car" or "Motorcycle"
+    int slotID;         // 1-250 car, 251-300 motorcycle, -1 if waiting in queue
+    string entryTime;   // "14:35"
 };
 
 #endif

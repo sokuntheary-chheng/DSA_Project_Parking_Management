@@ -24,7 +24,6 @@ void insertHT(HashTable* ht, Vehicle v) {
     newNode->data = v;
     newNode->next = ht->buckets[index];
     ht->buckets[index] = newNode;
-    cout << "Vehicle " << v.plate << " inserted at hash index " << index << endl;
 }
 
 bool searchHT(HashTable* ht, string plate, Vehicle& result) {
@@ -37,7 +36,6 @@ bool searchHT(HashTable* ht, string plate, Vehicle& result) {
         }
         current = current->next;
     }
-    cout << "Vehicle " << plate << " not found." << endl;
     return false;
 }
 
@@ -52,7 +50,6 @@ void deleteHT(HashTable* ht, string plate) {
             else
                 prev->next = current->next;
             delete current;
-            cout << "Vehicle " << plate << " removed from hash table." << endl;
             return;
         }
         prev = current;
@@ -78,4 +75,17 @@ void displayHT(HashTable* ht) {
         }
     }
     if (empty) cout << "Hash table is empty." << endl;
+}
+
+void updateHT(HashTable* ht, string plate, string newTime) {
+    int index = hashFunction(plate);
+    HNode* current = ht->buckets[index];
+    while (current != nullptr) {
+        if (current->data.plate == plate) {
+            current->data.entryTime = newTime;
+            return;
+        }
+        current = current->next;
+    }
+    cout << "Vehicle " << plate << " not found." << endl;
 }

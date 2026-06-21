@@ -2,8 +2,6 @@
 #define STACK_H
 #include <string>
 #include "vehicle.h"
-#include "vehicle.h"
-#include <string>
 using namespace std;
 
 struct ActionRecord {
@@ -27,5 +25,6 @@ ActionRecord pop(Stack* st);
 ActionRecord peek(Stack* st);
 bool isEmptyStack(Stack* st);
 void displayStack(Stack* st);
+void clearStack(Stack* st);
 
 #endif

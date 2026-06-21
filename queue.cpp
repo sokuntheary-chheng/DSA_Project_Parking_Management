@@ -59,3 +59,19 @@ void displayQueue(Queue* q) {
         current = current->next;
     }
 }
+
+Vehicle getFront(Queue* q) {
+    if (q->n == 0) {
+        cout << "Waiting queue is empty." << endl;
+        Vehicle empty;
+        empty.plate = "";
+        return empty;
+    }
+    return q->front->data;
+}
+
+void clearQueue(Queue* q) {
+    while (q->n > 0) {
+        dequeue(q);
+    }
+}

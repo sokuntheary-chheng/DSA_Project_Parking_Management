@@ -74,3 +74,28 @@ BSTNode* deleteBST(BSTNode* root, int slotID) {
     }
     return root;
 }
+
+void preOrder(BSTNode* root) {
+    if (root != nullptr) {
+        cout << "Slot " << root->data.slotID
+             << " | Plate: " << root->data.plate
+             << " | Type: " << root->data.type << endl;
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+
+void postOrder(BSTNode* root) {
+    if (root != nullptr) {
+        postOrder(root->left);
+        postOrder(root->right);
+        cout << "Slot " << root->data.slotID
+             << " | Plate: " << root->data.plate
+             << " | Type: " << root->data.type << endl;
+    }
+}
+
+int countBST(BSTNode* root) {
+    if (root == nullptr) return 0;
+    return 1 + countBST(root->left) + countBST(root->right);
+}

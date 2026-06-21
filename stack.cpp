@@ -60,3 +60,9 @@ void displayStack(Stack* st) {
         current = current->next;
     }
 }
+
+void clearStack(Stack* st) {
+    while (st->n > 0) {
+        pop(st);
+    }
+}

@@ -18,5 +18,7 @@ void enqueue(Queue* q, Vehicle v);
 Vehicle dequeue(Queue* q);
 bool isEmptyQueue(Queue* q);
 void displayQueue(Queue* q);
+Vehicle getFront(Queue* q);
+void clearQueue(Queue* q);
 
 #endif
