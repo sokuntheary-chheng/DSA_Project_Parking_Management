@@ -1,6 +1,6 @@
 # Parking Management System
 
-A console-based C++ application that simulates a university parking lot, built for the Data Structure and Algorithms team project.
+A console-based C++ application that simulates a university parking lot, built for the Data Structure and Algorithms team project (DSA Team 11).
 
 ## Team Members
 
@@ -13,8 +13,8 @@ A console-based C++ application that simulates a university parking lot, built f
 ## Project Overview
 
 This system manages a university parking lot with:
-- 250 car slots (Slot ID 1-250)
-- 50 motorcycle slots (Slot ID 251-300)
+- 10 car slots (Slot ID 1-10)
+- 290 motorcycle slots (Slot ID 11-300)
 - Total capacity: 300 slots
 
 Data is persisted to `parking_data.csv` so records are not lost between runs.
@@ -51,25 +51,34 @@ Data is persisted to `parking_data.csv` so records are not lost between runs.
 | 15 | Count total parked vehicles | Read | BST |
 | 16 | Save and exit | - | File I/O |
 
-## File Structure
+## Repository Structure
 
 ```
 DSA_PROJECT/
-├── vehicle.h          # Shared Vehicle struct
-├── linkedlist.h/.cpp  # Linked list operations
-├── sorting.h/.cpp     # Bubble sort implementations
-├── stack.h/.cpp       # Stack for undo and action history
-├── queue.h/.cpp       # Queue for waiting vehicles
-├── hashtable.h/.cpp   # Hash table for fast search and update
-├── bst.h/.cpp         # Binary search tree for sorted slot view
-├── fileio.h/.cpp      # CSV save and load
-├── main.cpp           # Menu and system integration
-└── parking_data.csv   # Persisted vehicle data
+├── DSA_Team11_Parking_Management_System_Report.docx   # Project report (Word)
+├── DSA_Team11_Parking_Management_System_Report.pdf    # Project report (PDF)
+├── Project_Flowchart.pdf                               # System flowchart
+├── README.md
+└── Source_Code/
+    ├── vehicle.h          # Shared Vehicle struct
+    ├── linkedlist.h/.cpp  # Linked list operations
+    ├── sorting.h/.cpp     # Bubble sort implementations
+    ├── stack.h/.cpp       # Stack for undo and action history
+    ├── queue.h/.cpp       # Queue for waiting vehicles
+    ├── hashtable.h/.cpp   # Hash table for fast search and update
+    ├── bst.h/.cpp         # Binary search tree for sorted slot view
+    ├── fileio.h/.cpp      # CSV save and load
+    └── main.cpp           # Menu and system integration
 ```
+
+> Compiled binaries (`*.exe`, `*.o`) and `parking_data.csv` are generated at runtime and are not required for grading the source code itself.
 
 ## How to Compile
 
+Run this from inside the `Source_Code` folder:
+
 ```bash
+cd Source_Code
 g++ main.cpp linkedlist.cpp sorting.cpp stack.cpp queue.cpp fileio.cpp hashtable.cpp bst.cpp -o parking
 ```
 
@@ -97,6 +106,13 @@ g++ main.cpp linkedlist.cpp sorting.cpp stack.cpp queue.cpp fileio.cpp hashtable
 | BST search/insert/delete | O(log n) average | O(n) |
 | BST traversal (in/pre/post-order) | O(n) | O(n) |
 
+## Known Limitations
+
+- The waiting queue is not saved to `parking_data.csv`. Only parked vehicles persist between sessions; any vehicle still waiting in the queue when the program closes is not restored on the next run.
+- When a freed slot does not match the vehicle type at the front of the waiting queue, that vehicle is re-added to the back of the queue rather than keeping its original position.
+- Plate matching is case-sensitive.
+- The binary search tree is not self-balancing, so its worst-case performance depends on the order in which vehicles are parked.
+
 ## Academic Integrity
 
 All code in this repository was written independently by the team members listed above, following concepts taught in the Data Structure and Algorithms course (Lessons 04-13). No AI-generated or copied code was used in the implementation.
@@ -105,4 +121,5 @@ All code in this repository was written independently by the team members listed
 
 - **Course:** Data Structure and Algorithms
 - **Lecturer:** Seak Leng
-- **Deadline:** June 28, 2026
+- **Team:** DSA Team 11
+- **Deadline:** June 30, 2026
